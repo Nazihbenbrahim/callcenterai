@@ -1,0 +1,15 @@
+# Environnement Python
+.venv/
+__pycache__/
+*.pyc
+
+# MLflow
+mlruns/
+mlflow.db
+
+# Sorties diverses
+outputs/
+.ipynb_checkpoints/
+
+# Dossiers système
+.DS_Store
