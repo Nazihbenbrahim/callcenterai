@@ -1,0 +1,52 @@
+schema: '2.0'
+stages:
+  download:
+    cmd: python src/data/download_kaggle.py
+    deps:
+    - path: src/data/download_kaggle.py
+      hash: md5
+      md5: 947795b40c6c4a55b72f23c211bd58a9
+      size: 1929
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: afc1abc92f08e24fdce0eb8a2b9e022d.dir
+      size: 29090002
+      nfiles: 2
+  prepare:
+    cmd: python src/data/prepare_data.py
+    deps:
+    - path: data/raw/it_tickets.csv
+      hash: md5
+      md5: a95d3fbefcc211c3ab4002017c4215b1
+      size: 14521082
+    - path: src/data/prepare_data.py
+      hash: md5
+      md5: 12a430713399631c041a8ac3cd81a275
+      size: 1270
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 054458c522769f2ba99e5acce7300f77.dir
+      size: 14521124
+      nfiles: 3
+  train_tfidf:
+    cmd: python src/models/tfidf_svm/train_tfidf.py
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 65ff07a19e0ac58fd17d69f24cc9b2ce
+      size: 10114793
+    - path: data/processed/val.csv
+      hash: md5
+      md5: 829ee9cdfa858a80c4fc878bb4aafa90
+      size: 2190834
+    - path: src/models/tfidf_svm/train_tfidf.py
+      hash: md5
+      md5: 7fd4ae47a8ca76d99766d672a40e82a6
+      size: 3510
+    outs:
+    - path: models/tfidf_svm/model.joblib
+      hash: md5
+      md5: c0882e9d1b59ac0f27c97c7d450d129d
+      size: 11692848
