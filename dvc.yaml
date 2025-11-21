@@ -1,0 +1,24 @@
+stages:
+  download:
+    cmd: python src/data/download_kaggle.py
+    deps:
+      - src/data/download_kaggle.py
+    outs:
+      - data/raw
+
+  prepare:
+    cmd: python src/data/prepare_data.py
+    deps:
+      - src/data/prepare_data.py
+      - data/raw/it_tickets.csv
+    outs:
+      - data/processed
+
+  train_tfidf:
+    cmd: python src/models/tfidf_svm/train_tfidf.py
+    deps:
+      - src/models/tfidf_svm/train_tfidf.py
+      - data/processed/train.csv
+      - data/processed/val.csv
+    outs:
+      - models/tfidf_svm/model.joblib
