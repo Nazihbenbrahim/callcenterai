@@ -125,23 +125,40 @@ def main():
         )["f1"]
         return {"accuracy": acc, "f1_macro": f1_macro}
 
-    # ⚙️ Hyperparamètres (tu pourras ajuster sur Colab selon le temps / GPU)
-    training_args = TrainingArguments(
-        output_dir=str(project_root / "outputs" / "transformer"),
-        evaluation_strategy="epoch",
-        save_strategy="epoch",
-        logging_strategy="steps",
-        logging_steps=200,
-        num_train_epochs=3,
-        per_device_train_batch_size=16,
-        per_device_eval_batch_size=32,
-        learning_rate=5e-5,
-        weight_decay=0.01,
-        load_best_model_at_end=True,
-        metric_for_best_model="f1_macro",
-        greater_is_better=True,
-        report_to=[],  # on ne reporte pas vers wandb, etc.
-    )
+        # ⚙️ Hyperparamètres (robuste à différentes versions de transformers)
+    try:
+        # ✅ Version "moderne" (transformers 4.x)
+        training_args = TrainingArguments(
+            output_dir=str(project_root / "outputs" / "transformer"),
+            evaluation_strategy="epoch",
+            save_strategy="epoch",
+            logging_strategy="steps",
+            logging_steps=200,
+            num_train_epochs=3,
+            per_device_train_batch_size=16,
+            per_device_eval_batch_size=32,
+            learning_rate=5e-5,
+            weight_decay=0.01,
+            load_best_model_at_end=True,
+            metric_for_best_model="f1_macro",
+            greater_is_better=True,
+            report_to=[],  # pas de wandb & co
+        )
+    except TypeError as e:
+        # 🔁 Fallback pour les anciennes versions de transformers
+        print("⚠️ TrainingArguments ne supporte pas certains paramètres dans cet environnement.")
+        print("   Détail erreur:", e)
+        print("   ➜ Utilisation d'une configuration minimale compatible.")
+
+        training_args = TrainingArguments(
+            output_dir=str(project_root / "outputs" / "transformer"),
+            num_train_epochs=3,
+            per_device_train_batch_size=16,
+            per_device_eval_batch_size=32,
+            learning_rate=5e-5,
+            weight_decay=0.01,
+        )
+
 
     trainer = Trainer(
         model=model,
