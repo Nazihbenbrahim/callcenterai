@@ -14,3 +14,4 @@ outputs/
 # Dossiers système
 .DS_Store
 models/transformer/model/
+venv/
