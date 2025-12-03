@@ -1,0 +1,49 @@
+# Dockerfile.tfidf
+# Multi-stage build pour réduire la taille finale
+FROM python:3.11-slim AS builder
+
+WORKDIR /build
+
+# Installer uniquement les dépendances de build nécessaires
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        gcc \
+        g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copier uniquement requirements
+COPY requirements-tfidf-service.txt ./requirements.txt
+
+# Installer les dépendances Python dans un dossier séparé
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+# ============================================
+# Stage final (image légère)
+# ============================================
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Copier uniquement les packages Python installés (pas gcc/g++)
+COPY --from=builder /install /usr/local
+
+# Créer un user non-root pour la sécurité
+RUN useradd -m -u 1000 appuser && \
+    chown -R appuser:appuser /app
+
+# Copier uniquement le code nécessaire
+COPY --chown=appuser:appuser src/services/tfidf_service ./src/services/tfidf_service
+COPY --chown=appuser:appuser models/tfidf_svm ./models/tfidf_svm
+
+USER appuser
+
+EXPOSE 8000
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import requests; requests.get('http://localhost:8000/health')" || exit 1
+
+CMD ["uvicorn", "src.services.tfidf_service.main:app", \
+     "--host", "0.0.0.0", \
+     "--port", "8000", \
+     "--workers", "1"]

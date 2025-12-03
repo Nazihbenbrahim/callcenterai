@@ -1,4 +1,5 @@
 from pathlib import Path
+
 import time
 from typing import List, Optional, Dict
 
@@ -7,6 +8,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
 from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
+from prometheus_fastapi_instrumentator import Instrumentator
 
 
 # =========================
@@ -76,6 +78,7 @@ app = FastAPI(
     version="1.0.0",
     description="TF-IDF + LinearSVC classifier for IT service tickets.",
 )
+Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
 MODEL = None  # chargé au startup
 CLASSES = None

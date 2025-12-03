@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.tmp
+
+.git
+.dvc/
+mlruns/
+mlflow.db
+data/
+outputs/
+
+# On laisse passer les modèles
+# (ne pas mettre `models/` ici)

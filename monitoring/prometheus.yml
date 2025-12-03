@@ -1,0 +1,24 @@
+# monitoring/prometheus.yml
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["prometheus:9090"]
+
+  - job_name: "tfidf_svc"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["tfidf_svc:8000"]
+
+  - job_name: "transformer_svc"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["transformer_svc:8001"]
+
+  - job_name: "agent_svc"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["agent_svc:8002"]

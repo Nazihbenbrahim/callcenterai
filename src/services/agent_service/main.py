@@ -8,6 +8,7 @@ import requests
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
+from prometheus_fastapi_instrumentator import Instrumentator
 
 # ==========================
 #  Config + modèles Pydantic

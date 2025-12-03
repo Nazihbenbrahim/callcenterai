@@ -1,0 +1,64 @@
+version: "3.9"
+
+services:
+  tfidf_svc:
+    build:
+      context: .
+      dockerfile: Dockerfile.tfidf
+    container_name: tfidf_svc
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models/tfidf_svm:/app/models/tfidf_svm:ro
+
+  transformer_svc:
+    build:
+      context: .
+      dockerfile: Dockerfile.transformer
+    container_name: transformer_svc
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./models/transformer:/app/models/transformer:ro
+
+  agent_svc:
+    build:
+      context: .
+      dockerfile: Dockerfile.agent
+    container_name: agent_svc
+    ports:
+      - "8002:8002"
+    environment:
+      TFIDF_URL: "http://tfidf_svc:8000/predict"
+      TRANSFORMER_URL: "http://transformer_svc:8001/predict"
+    depends_on:
+      - tfidf_svc
+      - transformer_svc
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+    depends_on:
+      - tfidf_svc
+      - transformer_svc
+      - agent_svc
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+volumes:
+  grafana-data:
+

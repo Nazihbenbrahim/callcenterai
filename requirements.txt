@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+scikit-learn
+pandas
+numpy
+mlflow
+joblib
+transformers
+datasets
+evaluate
+requests
+torch
