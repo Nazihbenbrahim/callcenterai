@@ -9,6 +9,7 @@ from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
 from prometheus_fastapi_instrumentator import Instrumentator
+from fastapi.middleware.cors import CORSMiddleware
 
 # ==========================
 #  Config + modèles Pydantic
@@ -33,6 +34,14 @@ class AgentResponse(BaseModel):
 
 
 app = FastAPI(title="CallCenterAI Agent Service")
+# Autoriser les appels depuis une page web locale (front)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],      # en prod tu restreins, ici c'est un projet de démo
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
