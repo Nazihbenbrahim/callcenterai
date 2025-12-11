@@ -15,6 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 #  Config + modèles Pydantic
 # ==========================
 
+
 class AgentRequest(BaseModel):
     text: str
     top_k: int = 3
@@ -37,7 +38,7 @@ app = FastAPI(title="CallCenterAI Agent Service")
 # Autoriser les appels depuis une page web locale (front)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],      # en prod tu restreins, ici c'est un projet de démo
+    allow_origins=["*"],  # en prod tu restreins, ici c'est un projet de démo
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -58,7 +59,9 @@ print(f"🔗 Transformer service URL  : {TRANSFORMER_URL}")
 
 EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 PHONE_RE = re.compile(r"\+?\d[\d\s\-]{7,}\d")
-ID_RE = re.compile(r"\b\d{8,}\b")  # longues suites de chiffres (numéro de compte, carte, etc.)
+ID_RE = re.compile(
+    r"\b\d{8,}\b"
+)  # longues suites de chiffres (numéro de compte, carte, etc.)
 
 
 def scrub_pii(text: str) -> str:
@@ -125,6 +128,7 @@ def metrics():
 #  Core agent
 # ===========
 
+
 @app.post("/classify", response_model=AgentResponse)
 def classify(req: AgentRequest):
     global TOTAL_REQUESTS, TFIDF_CALLS, TRANSFORMER_CALLS, ERROR_COUNT
@@ -175,7 +179,9 @@ def classify(req: AgentRequest):
         )
         preds = [
             ModelPrediction(label=lbl, score=float(score))
-            for lbl, score in sorted(probas.items(), key=lambda x: x[1], reverse=True)[: req.top_k]
+            for lbl, score in sorted(probas.items(), key=lambda x: x[1], reverse=True)[
+                : req.top_k
+            ]
         ]
         return AgentResponse(
             chosen_model="tfidf",

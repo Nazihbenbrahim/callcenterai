@@ -126,6 +126,7 @@ def main():
         return {"accuracy": acc, "f1_macro": f1_macro}
 
         # ⚙️ Hyperparamètres (robuste à différentes versions de transformers)
+
     try:
         # ✅ Version "moderne" (transformers 4.x)
         training_args = TrainingArguments(
@@ -146,7 +147,9 @@ def main():
         )
     except TypeError as e:
         # 🔁 Fallback pour les anciennes versions de transformers
-        print("⚠️ TrainingArguments ne supporte pas certains paramètres dans cet environnement.")
+        print(
+            "⚠️ TrainingArguments ne supporte pas certains paramètres dans cet environnement."
+        )
         print("   Détail erreur:", e)
         print("   ➜ Utilisation d'une configuration minimale compatible.")
 
@@ -158,7 +161,6 @@ def main():
             learning_rate=5e-5,
             weight_decay=0.01,
         )
-
 
     trainer = Trainer(
         model=model,
@@ -215,10 +217,15 @@ def main():
             return_tensors="np",
         )
 
-        logits = model(
-            input_ids=encoded_example["input_ids"],
-            attention_mask=encoded_example["attention_mask"],
-        ).logits.detach().cpu().numpy()
+        logits = (
+            model(
+                input_ids=encoded_example["input_ids"],
+                attention_mask=encoded_example["attention_mask"],
+            )
+            .logits.detach()
+            .cpu()
+            .numpy()
+        )
 
         signature = infer_signature(encoded_example, logits)
 

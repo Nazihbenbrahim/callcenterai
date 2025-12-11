@@ -15,6 +15,7 @@ from prometheus_fastapi_instrumentator import Instrumentator
 # Config & chemins
 # =========================
 
+
 def get_project_root() -> Path:
     # main.py est dans: project/src/services/tfidf_service/main.py
     # -> parents[3] = project/
@@ -51,6 +52,7 @@ REQUEST_ERRORS = Counter(
 # =========================
 # Pydantic schemas
 # =========================
+
 
 class PredictRequest(BaseModel):
     text: Optional[str] = None
@@ -148,10 +150,7 @@ def predict(req: PredictRequest):
                 prob_vec = proba[i]
                 # top_k classes
                 top_indices = prob_vec.argsort()[::-1][:top_k]
-                probs_dict = {
-                    str(CLASSES[j]): float(prob_vec[j])
-                    for j in top_indices
-                }
+                probs_dict = {str(CLASSES[j]): float(prob_vec[j]) for j in top_indices}
 
             results.append(
                 Prediction(
