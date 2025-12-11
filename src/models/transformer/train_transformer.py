@@ -1,6 +1,7 @@
-from pathlib import Path
 import json
+from pathlib import Path
 
+import evaluate
 import mlflow
 import mlflow.transformers
 import numpy as np
@@ -8,14 +9,8 @@ import pandas as pd
 from datasets import Dataset, DatasetDict
 from mlflow.models.signature import infer_signature
 from sklearn.preprocessing import LabelEncoder
-from transformers import (
-    AutoTokenizer,
-    AutoModelForSequenceClassification,
-    TrainingArguments,
-    Trainer,
-)
-import evaluate
-
+from transformers import (AutoModelForSequenceClassification, AutoTokenizer,
+                          Trainer, TrainingArguments)
 
 MODEL_NAME = "distilbert-base-multilingual-cased"
 EXPERIMENT_NAME = "callcenterai-transformer"

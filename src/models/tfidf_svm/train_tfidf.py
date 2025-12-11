@@ -7,10 +7,9 @@ import pandas as pd
 from mlflow.models.signature import infer_signature
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import accuracy_score, f1_score, classification_report
+from sklearn.metrics import accuracy_score, classification_report, f1_score
 from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
-
 
 PROJECT_NAME = "callcenterai-tfidf-svm"
 

@@ -1,17 +1,17 @@
 # tests/conftest.py
-from pathlib import Path
 import sys
+from pathlib import Path
 
-from fastapi.testclient import TestClient
 import pytest
+from fastapi.testclient import TestClient
 
 # 🔧 Ajouter la racine du projet au PYTHONPATH
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from src.services.agent_service.main import app as agent_app
 from src.services.tfidf_service.main import app as tfidf_app
 from src.services.transformer_service.main import app as transformer_app
-from src.services.agent_service.main import app as agent_app
 
 
 @pytest.fixture(scope="session")

@@ -1,15 +1,15 @@
-from pathlib import Path
 import os
 import re
 import time
+from pathlib import Path
 from typing import List, Literal
 
 import requests
 from fastapi import FastAPI
-from fastapi.responses import PlainTextResponse
-from pydantic import BaseModel
-from prometheus_fastapi_instrumentator import Instrumentator
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
+from prometheus_fastapi_instrumentator import Instrumentator
+from pydantic import BaseModel
 
 # ==========================
 #  Config + modèles Pydantic

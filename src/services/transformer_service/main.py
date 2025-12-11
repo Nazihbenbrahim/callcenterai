@@ -1,13 +1,13 @@
-from pathlib import Path
 import json
 import time
-from typing import List, Dict
+from pathlib import Path
+from typing import Dict, List
 
 import torch
 from fastapi import FastAPI
-from pydantic import BaseModel
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from prometheus_fastapi_instrumentator import Instrumentator
+from pydantic import BaseModel
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 
 class PredictRequest(BaseModel):

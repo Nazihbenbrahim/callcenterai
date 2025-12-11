@@ -1,15 +1,14 @@
-from pathlib import Path
-
 import time
-from typing import List, Optional, Dict
+from pathlib import Path
+from typing import Dict, List, Optional
 
 import joblib
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import PlainTextResponse
-from pydantic import BaseModel
-from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
+from prometheus_client import (CONTENT_TYPE_LATEST, Counter, Histogram,
+                               generate_latest)
 from prometheus_fastapi_instrumentator import Instrumentator
-
+from pydantic import BaseModel
 
 # =========================
 # Config & chemins

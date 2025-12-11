@@ -1,8 +1,8 @@
-from pathlib import Path
 import json
+from pathlib import Path
 
 import torch
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 
 def main():
