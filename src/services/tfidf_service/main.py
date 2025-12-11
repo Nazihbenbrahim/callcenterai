@@ -5,7 +5,8 @@ from typing import Dict, List, Optional
 import joblib
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import PlainTextResponse
-from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, generate_latest
+from prometheus_client import (CONTENT_TYPE_LATEST, Counter, Histogram,
+                               generate_latest)
 from prometheus_fastapi_instrumentator import Instrumentator
 from pydantic import BaseModel
 

@@ -9,12 +9,8 @@ import pandas as pd
 from datasets import Dataset, DatasetDict
 from mlflow.models.signature import infer_signature
 from sklearn.preprocessing import LabelEncoder
-from transformers import (
-    AutoModelForSequenceClassification,
-    AutoTokenizer,
-    Trainer,
-    TrainingArguments,
-)
+from transformers import (AutoModelForSequenceClassification, AutoTokenizer,
+                          Trainer, TrainingArguments)
 
 MODEL_NAME = "distilbert-base-multilingual-cased"
 EXPERIMENT_NAME = "callcenterai-transformer"
