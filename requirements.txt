@@ -10,3 +10,4 @@ datasets
 evaluate
 requests
 torch
+prometheus-fastapi-instrumentator
